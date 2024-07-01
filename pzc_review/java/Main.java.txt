@@ -1,0 +1,98 @@
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+class LinkedList<T> {
+    public T head;
+    public LinkedList<T> tail;
+
+    LinkedList(T head) {
+        this.head = head;
+        this.tail = null;
+    }
+
+    LinkedList(T head, LinkedList<T> tail) {
+        this.head = head;
+        this.tail = tail;
+    }
+}
+
+class Main {
+    public static <T> LinkedList<T> cons(T head) {
+        return new LinkedList<T>(head);
+    }
+
+    public static <T> LinkedList<T> cons(T head, LinkedList<T> tail) {
+        return new LinkedList<T>(head, tail);
+    }
+
+    public static <T> String listToString(LinkedList<T> list) {
+        if (list == null) {
+            return "";
+        }
+
+        if (list.tail == null) {
+            return list.head.toString();
+        }
+
+        return list.head.toString() + " " + listToString(list.tail);
+    }
+
+    public static <T1, T2> LinkedList<T2> myMap(Function<T1, T2> fn, LinkedList<T1> list) {
+        if (list == null) {
+            return null;
+        }
+
+        return cons(fn.apply(list.head), myMap(fn, list.tail));
+    }
+
+    public static <T1, T2> T2 myReduce(BiFunction<T2, T1, T2> fn, T2 accm, LinkedList<T1> list) {
+        if (list == null) {
+            return accm;
+        }
+
+        return myReduce(fn, fn.apply(accm, list.head), list.tail);
+    }
+
+    public static <T1, T2> T2 myReduceRight(BiFunction<T1, T2, T2> fn, T2 accm, LinkedList<T1> list) {
+        // [BEGIN] YOUR CODE HERE
+        return null;
+        // [END] YOUR CODE HERE
+    }
+
+     public static <T1, T2> LinkedList<T2> myMap2(Function<T1, T2> fn, LinkedList<T1> list) {
+         // [BEGIN] YOUR CODE HERE
+         return null;
+         // [END] YOUR CODE HERE
+     }
+
+    public static void main(String[] args) {
+        LinkedList<Integer> exampleList = cons(1, cons(2, cons(3, cons(4))));
+        Function<Integer, Integer> plusOne = (x) -> x + 1;
+        BiFunction<Integer, Integer, Integer> xTimesTwoPlusY = (x, y) -> x * 2 + y;
+        BiFunction<Integer, Integer, Integer> printXAndReturnY = (x, y) -> {
+            System.out.println(x);
+            return y;
+        };
+        Function<Integer, String> toString = (x) -> x.toString();
+        BiFunction<String, String, String> unfoldCalculation = (x, y) -> "fn(" + x.toString() + ", " + y.toString() + ")";
+        Function<Integer, Integer> printAndReturn = (x) -> {
+            System.out.println(x);
+            return x;
+        };
+        System.out.println(listToString(exampleList) + " should be 1 2 3 4");
+        System.out.println(listToString(myMap(plusOne, exampleList)) + " should be 2 3 4 5");
+        System.out.println(myReduce(xTimesTwoPlusY, 0, exampleList) + " should be 26");
+        System.out.println(myReduce(unfoldCalculation, "accm", myMap(toString, exampleList)) + " should be fn(fn(fn(fn(accm, 1), 2), 3), 4)");
+        System.out.println(myReduceRight(xTimesTwoPlusY, 0, exampleList) + " should be 20");
+        System.out.println(myReduceRight(unfoldCalculation, "accm", myMap(toString, exampleList)) + " should be fn(1, fn(2, fn(3, fn(4, accm))))");
+        System.out.println("Below should output 4 3 2 1 each on a separate line:");
+        myReduceRight(printXAndReturnY, 0, exampleList);
+        System.out.println(listToString(myMap2(plusOne, exampleList)) + " should be 2 3 4 5");
+        System.out.println("The two outputs below should be equal:");
+        System.out.println("First output:");
+        myMap(printAndReturn, exampleList);
+        System.out.println("Second output:");
+        myMap2(printAndReturn, exampleList);
+    }
+}

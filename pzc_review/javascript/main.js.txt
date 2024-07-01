@@ -1,0 +1,70 @@
+// Refer to README for detailed instructions.
+
+function cons(head, tail) {
+    return {
+        head: head,
+        tail: tail,
+    };
+}
+
+function listToString(list) {
+    if (!list) {
+        return "";
+    }
+    if (!list.tail) {
+        return list.head.toString();
+    }
+    return list.head.toString() + " " + listToString(list.tail);
+}
+
+function myMap(fn, list) {
+    if (!list) {
+        return undefined;
+    }
+    return cons(fn(list.head), myMap(fn, list.tail));
+}
+
+function myReduce(fn, accm, list) {
+    if (!list) {
+        return accm;
+    }
+    return myReduce(fn, fn(accm, list.head), list.tail);
+}
+
+function myReduceRight(fn, accm, list) {
+    // [BEGIN] YOUR CODE HERE
+    return undefined;
+    // [END] YOUR CODE HERE
+}
+
+function myMap2(fn, list) {
+    // [BEGIN] YOUR CODE HERE
+    return undefined;
+    // [END] YOUR CODE HERE
+}
+
+
+function main() {
+    let exampleList = cons(1, cons(2, cons(3, cons(4))))
+    let plusOne = (x) => x + 1
+    let xTimesTwoPlusY = (x, y) => x * 2 + y
+    let printXAndReturnY = (x, y) => { console.log(x); return y; }
+    let unfoldCalculation = (x, y) => "fn(" + x + ", " + y + ")"
+    let printAndReturn = console.log
+    console.log(listToString(exampleList), "should be 1 2 3 4")
+    console.log(listToString(myMap(plusOne, exampleList)), "should be 2 3 4 5")
+    console.log(myReduce(xTimesTwoPlusY, 0, exampleList), "should be 26")
+    console.log(myReduce(unfoldCalculation, "accm", exampleList), "should be fn(fn(fn(fn(accm, 1), 2), 3), 4)")
+    console.log(myReduceRight(xTimesTwoPlusY, 0, exampleList), "should be 20")
+    console.log(myReduceRight(unfoldCalculation, "accm", exampleList), "should be fn(1, fn(2, fn(3, fn(4, accm))))")
+    console.log("Below should output 4 3 2 1 each on a separate line:");
+    myReduceRight(printXAndReturnY, 0, exampleList);
+    console.log(listToString(myMap2(plusOne, exampleList)), "should be 2 3 4 5")
+    console.log("The two outputs below should be equal:")
+    console.log("First output:")
+    myMap(printAndReturn, exampleList)
+    console.log("Second output:")
+    myMap2(printAndReturn, exampleList)
+}
+
+main()

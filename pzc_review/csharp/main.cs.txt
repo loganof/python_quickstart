@@ -1,0 +1,105 @@
+using System;
+
+public class LinkedList<T>
+{
+    public T head
+    {
+        get;
+        set;
+    }
+
+    public LinkedList<T> tail
+    {
+        get;
+        set;
+    }
+}
+
+public class FoldR
+{
+    public static LinkedList<T> cons<T>(T head, LinkedList<T> tail = null)
+    {
+        return new LinkedList<T>{head = head, tail = tail};
+    }
+
+    public static string listToString<T>(LinkedList<T> list)
+    {
+        if (list == null)
+        {
+            return "";
+        }
+
+        if (list.tail == null)
+        {
+            return list.head.ToString();
+        }
+
+        return list.head.ToString() + " " + listToString(list.tail);
+    }
+
+    public static LinkedList<T2> myMap<T1, T2>(Func<T1, T2> fn, LinkedList<T1> list)
+    {
+        if (list == null)
+        {
+            return null;
+        }
+
+        return cons(fn(list.head), myMap(fn, list.tail));
+    }
+
+    public static T2 myReduce<T1, T2>(Func<T2, T1, T2> fn, T2 accm, LinkedList<T1> list)
+    {
+        if (list == null)
+        {
+            return accm;
+        }
+
+        return myReduce(fn, fn(accm, list.head), list.tail);
+    }
+
+    public static T2 myReduceRight<T1, T2>(Func<T1, T2, T2> fn, T2 accm, LinkedList<T1> list)
+    {
+        // [BEGIN] YOUR CODE HERE
+        return default (T2);
+        // [END] YOUR CODE HERE
+    }
+
+    public static LinkedList<T2> myMap2<T1, T2>(Func<T1, T2> fn, LinkedList<T1> list)
+    {
+        // [BEGIN] YOUR CODE HERE
+        return null;
+        // [END] YOUR CODE HERE
+    }
+
+    public static void Main(string[] args)
+    {
+        var exampleList = cons(1, cons(2, cons(3, cons(4))));
+        Func<int, int> plusOne = (x) => x + 1;
+        Func<int, int, int> xTimesTwoPlusY = (x, y) => x * 2 + y;
+        Func<int, int, int> printXAndReturnY = (x, y) => {
+            Console.WriteLine(x);
+            return y;    
+        };
+        Func<int, string> toString = (x) => x.ToString();
+        Func<string, string, string> unfoldCalculation = (x, y) => "fn(" + x + ", " + y + ")";
+        Func<int, int> printAndReturn = (x) =>
+        {
+            Console.WriteLine(x);
+            return x;
+        };
+        Console.WriteLine(listToString(exampleList) + " should be 1 2 3 4");
+        Console.WriteLine(listToString(myMap(plusOne, exampleList)) + " should be 2 3 4 5");
+        Console.WriteLine(myReduce(xTimesTwoPlusY, 0, exampleList) + " should be 26");
+        Console.WriteLine(myReduce(unfoldCalculation, "accm", myMap(toString, exampleList)) + " should be fn(fn(fn(fn(accm, 1), 2), 3), 4)");
+        Console.WriteLine(myReduceRight(xTimesTwoPlusY, 0, exampleList) + " should be 20");
+        Console.WriteLine(myReduceRight(unfoldCalculation, "accm", myMap(toString, exampleList)) + " should be fn(1, fn(2, fn(3, fn(4, accm))))");
+        Console.WriteLine("Below should output 4 3 2 1 each on a separate line:");
+        myReduceRight(printXAndReturnY, 0, exampleList);
+        Console.WriteLine(listToString(myMap2(plusOne, exampleList)) + " should be 2 3 4 5");
+        Console.WriteLine("The two outputs below should be equal:");
+        Console.WriteLine("First output:");
+        myMap(printAndReturn, exampleList);
+        Console.WriteLine("Second output:");
+        myMap2(printAndReturn, exampleList);
+    }
+}

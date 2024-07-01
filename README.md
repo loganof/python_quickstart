@@ -1,0 +1,2 @@
+python_quickstart主要用于学习python的基础知识。
+1. pzc_review是一个试题，做题时给人留下了深刻的印象
