@@ -25,7 +25,7 @@ class ConcreteMeditor(Mediator):
     def set_colleague2(self, colleague: "Colleague"):
         self._colleague2 = colleague
         
-    def notify(self, sender, colleague: "Colleague"):
+    def notify(self, sender, event):
         if event == "A":
             print("Mediator reacts on A and triggers following operations:")
             self._colleague2.do_c()
@@ -67,5 +67,9 @@ colleague1 = ConcreteColleague1(mediator)
 colleague2 = ConcreteColleague2(mediator)
 
 mediator.set_colleague1(colleague1)
-        
+mediator.set_colleague2(colleague2)
+
+colleague1.do_a()
+
+colleague1.do_b()
         
