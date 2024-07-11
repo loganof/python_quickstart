@@ -70,6 +70,5 @@ mediator.set_colleague1(colleague1)
 mediator.set_colleague2(colleague2)
 
 colleague1.do_a()
-
 colleague1.do_b()
         
