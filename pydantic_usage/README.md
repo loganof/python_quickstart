@@ -1,4 +1,6 @@
-使用pydantic的BaseModel
+Pydantic:用来执行数据校验的python库。
+official document: https://docs.pydantic.dev/latest/concepts/models/
+使用Pydantic的BaseModel
 1. 自动验证数据
 2. 自动转化错误类型的数据
    1. 如果参数类型为int,传入时为string，能够自动转化
@@ -11,4 +13,4 @@
       2. 反序列化：将字符串、字节流等格式还原为对象。
          1. 在python中，json.loads()
 4. 支持嵌套模型和复杂的数据结构
-5. 默认装饰器@validator,@root_validator等数据验证
+5. 默认装饰器@field_validator,@model_validator(@validator,@root_validator has been deprecated)等数据验证
